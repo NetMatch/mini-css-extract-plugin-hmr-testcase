@@ -1,0 +1,34 @@
+{
+  "name": "mini-css-extract-plugin-hmr-testcase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NetMatch/mini-css-extract-plugin-hmr-testcase.git"
+  },
+  "author": "NetMatch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NetMatch/mini-css-extract-plugin-hmr-testcase/issues"
+  },
+  "homepage": "https://github.com/NetMatch/mini-css-extract-plugin-hmr-testcase#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.1.0",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-middleware": "^3.7.0",
+    "webpack-hot-middleware": "^2.25.0"
+  }
+}
