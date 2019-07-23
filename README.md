@@ -103,8 +103,9 @@ What follows is a short explanation of what it does, and how.
 
 
 ### Step 1
-We start off by intercepting the `callback` in the plugin's `loader.js` and essentially transform an error state into a positive state
-that allows us to output a source _BUT_ we have that source throw _as if_ it was a module that suffered a compile error:
+We start off by intercepting the `callback` in the plugin's `loader.js` and transform an error state into a normal state
+where to output a source. We have that source throw _as if_ it was a module that suffered a compile error, but before it does,
+we insert the hot loader snippet.
 
 ```js
 const callback = !options.hmr
@@ -121,7 +122,7 @@ const callback = !options.hmr
     });
 ```
 
-This takes care of re-registering the `hot.accept` binding, so that any subsequent compilation which no longer throws an error, will remain capable of being accepted by the HMR client.
+This takes care of re-registering the `hot.accept` binding, so that any subsequent compilation will remain capable of being accepted by the HMR client.
 
 
 ### Step 2
