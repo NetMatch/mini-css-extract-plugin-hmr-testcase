@@ -127,10 +127,11 @@ This takes care of re-registering the `hot.accept` binding, so that any subseque
 
 ### Step 2
 
-With that done, we need to ensure that when the `throw` occur in the hot loaded replacement module, the loader generates code that instructs the HMR client that we can _handle_ it, so that it doesn't let it leak out and trigger the path that requires a full reload.
+With that done, we need to ensure that when a `throw` occurs in a hot-loaded replacement module, it doesn't leak out and trigger the path that
+requests the full reload. This means we need to tell the HMR client we can handle errors in our own hot-loaded replacement.
 
-We can do that by updating the hot loader template. It simply needs to register for its own acceptance, with an otherwise blank error handler: 
-` module.hot.accept(function(){});`
+We can do that by updating the hot loader template. It simply needs to make sure that the module registers for its own hot-acceptance, with an error handler.
+That error handler can just be blank. We don't need to actually _do_ anything here. E.g. `module.hot.accept(function(){});` will do.
 
 ```js
 function hotLoader(content, context) {
@@ -158,9 +159,10 @@ function hotLoader(content, context) {
 
 ### Step 3
 
-Finally, this will _almost_ work, except Webpack will lose track of dependencies in the child compiler, after the first error. That's because in the current versions of the loader, the dependencies are added for tracking _after_ checking the child compilation for errors. 
+Finally, this will _almost_ work, except Webpack will lose track of dependencies in the child compiler, after a compilation error occurs. 
 
-We need to move those to _before_ and we're done:
+That's because in the current versions of the loader, the dependencies are added for tracking _after_ checking the child compilation for errors. 
+So, we need to move the tracking of those dependencies to _before_ and we're done:
 
 ```js
 childCompiler.runAsChild((err, entries, compilation) => {
@@ -187,7 +189,7 @@ childCompiler.runAsChild((err, entries, compilation) => {
   // ()...)
 ```
 
-(NOTE: Not sure if the dependencies should be moved to before the first category of critical system errors as well. From our own testing it _works_ but it's not strictly needed.)
+(NOTE: Actually not sure if the dependencies should be moved to before the first category of errors as well. Those seem more like critical pipeline configuration errors and not errors due to content compilation.)
 
 
 
